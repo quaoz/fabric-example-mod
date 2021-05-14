@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "template",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "My Mod Template",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Me!"
+    "quaoz"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/quaoz/",
+    "sources": "https://github.com/quaoz/fabric-example-mod"
   },
 
   "license": "CC0-1.0",
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "com.github.quaoz.ExampleMod"
     ]
   },
   "mixins": [
