@@ -32,6 +32,7 @@ bin/
 
 run/
 
-# vlang
+# vlang (init script)
 
 *.dSYM/
+init
