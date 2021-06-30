@@ -1,14 +1,13 @@
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+def targetJavaVersion = 16
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
 group = project.maven_group
+version = "${project.mod_version}+${project.minecraft_version}"
+archivesBaseName = project.archives_base_name
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -16,6 +15,8 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+
+	mavenCentral()
 }
 
 dependencies {
@@ -29,6 +30,24 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
+
+}
+
+if (project.use_third_party_mods) {
+	repositories {
+		maven {
+			name = "Gegy"
+			url = "https://maven.gegy.dev"
+		}
+	}
+
+	dependencies {
+		// DataBreaker to reduce the time spent loading
+		// Don't use outside of dev environment
+		modRuntime("supercoder79:databreaker:${project.databreaker_version}") {
+			transitive = false
+		}
+	}
 }
 
 processResources {
@@ -46,13 +65,7 @@ tasks.withType(JavaCompile).configureEach {
 	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
-	if (JavaVersion.current().isJava9Compatible()) {
-		 it.options.release = targetVersion
-	}
+	it.options.release = 16
 }
 
 java {
